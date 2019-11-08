@@ -1,0 +1,15 @@
+{%extends 'basic_app/base.html' %}
+{% block body_block %}
+
+<div class = "jumbotron">
+    <h2>Create a new contact</h2>
+    <br />
+    <form method="POST">
+        {{ username_x }}
+        {{form.as_p}}
+        {% csrf_token %}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+</div>
+
+{% endblock %}

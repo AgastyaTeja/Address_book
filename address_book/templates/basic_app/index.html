@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+{% extends 'basic_app/base.html' %}
+
+{% block body_block %}
+
+<div class = "jumbotron">
+    {% if user.is_authenticated %}
+        <h2>Main functionality</h2>
+        <br />
+        <p class="lead">
+                <a class="btn btn-outline-primary" href="{% url 'basic_app:new_contact' %}" role="button">Create a new contact</a>
+                <a class="btn btn-outline-primary" href="{% url 'basic_app:view_contacts' %}" role="button">View all contacts</a>
+                <a class="btn btn-outline-primary" href="{% url 'basic_app:delete' %}" role="button">Delete a contact</a>
+                <a class="btn btn-outline-primary" href="{% url 'basic_app:update' %}" role="button">Update a contact</a>
+        </p>
+    {% else %}
+        <h2>About project</h2>
+        <br />
+        <p class="lead">A web-based address book which allows a user to manage individual contacts.</p>
+        <p>Register and log in.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
