@@ -114,14 +114,15 @@ def view_contacts(request):
 
 
 @login_required
-def update_contact(request,contact_id=1):
+def update_contact(request):
 
     current_user = request.user.get_username()
     user = User.objects.filter(username=current_user).first()
     output = UserContacts.objects.filter(current_user_id=user.id)
     count = output.count()
-
-    contact_obj =get_object_or_404(UserContacts,id = contact_id)
+    temp = UserContacts.objects.filter(current_user_id=user.id).first() 
+    
+    #contact_obj =get_object_or_404(UserContacts)
 
     form = UserContactForm()
 
