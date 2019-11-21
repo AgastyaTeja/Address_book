@@ -1,21 +1,11 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 # Create your models here.
 
 
-class UserProfileInfo(models.Model):
-
-    user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
-
-    #additional
-
-    def __str__(self):
-
-        return self.user.usernname
-
 class UserContacts(models.Model):
 
-    current_user = models.ForeignKey(User,on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,verbose_name='User')
     first_name = models.CharField(max_length = 150)
     last_name = models.CharField(max_length = 150)
     phone_number = models.CharField(max_length = 150)
@@ -24,4 +14,9 @@ class UserContacts(models.Model):
 
     def __str__(self):
 
-        return '{}'.format(self.first_name)
+        return '{0} {1}'.format(self.first_name, self.last_name)
+
+    class Meta:
+        verbose_name='Contact'
+        verbose_name_plural='Contacts'
+        ordering=['owner','last_name','first_name']

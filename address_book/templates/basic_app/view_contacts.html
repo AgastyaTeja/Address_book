@@ -1,40 +1,39 @@
-{%extends 'basic_app/base.html' %}
-{% block body_block %}
+{%extends 'basic_app/base.html' %} {% block body_block %}
 
-<div class = "jumbotron">
+<div class="jumbotron">
     <h2>Contacts list</h2>
     <br />
+    {% if contacts %}
     <div class="alert alert-info" role="alert">
         The number of contacts in your address book are: {{ number }}
     </div>
     <br />
-    {% if output %}
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone Number</th>
-                <th>Email Address</th>
-                <th>Street Address</th>
-            </thead>
-            {% for contact in output %}
-            <tr>
-                <td>{{ contact.first_name}}</td>
-                <td>{{ contact.last_name}}</td>
-                <td>{{ contact.phone_number}}</td>
-                <td>{{ contact.email_address}}</td>
-                <td>{{ contact.street_address}}</td>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Email Address</th>
+            <th>Street Address</th>
+            <th>Link</th>
+        </thead>
+        {% for contact in contacts %}
+        <tr>
+            <td>{{ contact.first_name}}</td>
+            <td>{{ contact.last_name}}</td>
+            <td>{{ contact.phone_number}}</td>
+            <td>{{ contact.email_address}}</td>
+            <td>{{ contact.street_address}}</td>
+            <td><a href="{% url 'basic_app:view_contact' contact_id=contact.id %}">open</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 
-            </tr>
-            {% endfor %}
-        </table>
     {% else %}
-        <div class="alert alert-warning" role="alert">
-            No contact records found!
-        </div>
+    <div class="alert alert-warning" role="alert">
+        No contact records found!
+    </div>
     {% endif %}
 </div>
 
-
 {% endblock %}
-

@@ -4,29 +4,7 @@
 <div class="jumbotron">
     <h2>Welcome to delete contact page</h2>
     <br />
-
-    <br />
-    {% if output %}
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <th>First Name</th>
-            <th>Edit</th>
-        </thead>
-        {% for contact in output %}
-        <tr>
-            <td>{{ contact.first_name}}</td>
-            <td><a href="#">Delete</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    
-{% else %}
-    <div class="alert alert-warning" role="alert">
-        No contact records found!
-    </div>
-{% endif %}
-
-
+    <h3>Are you sure you want to delete this contact?</h3>
 </div>
 
 {% endblock %}

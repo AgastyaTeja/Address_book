@@ -26,14 +26,12 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-        
             registered = True
 
         else:
             print(user_form.errors)
-    
-    else:
 
+    else:
         user_form = UserForm()
 
     return render(request,'basic_app/registration.html',
@@ -75,100 +73,61 @@ def user_login(request):
 
 @login_required
 def new_contact(request):
-    
-    
-    form = UserContactForm()
-
-    #current_user = request.user.get_username()
-    #user = User.objects.filter(username=current_user).first()
-    #output = UserContacts.objects.filter(current_user_id=user.id).first()
 
     if request.method == "POST":
         form = UserContactForm(request.POST)
 
         if form.is_valid():
-            form.save(commit=True)
-            return index(request)
+            contact = form.save(commit=False)
+            contact.owner = request.user
+            contact.save()
+            return HttpResponseRedirect(reverse('basic_app:view_contact', kwargs={'contact_id':contact.id}))
         else:
             print('Error Form Invalid')
-    
-    return render(request,'basic_app/contact.html',{'form':form})
+    else:
+        form = UserContactForm()
 
+    return render(request,'basic_app/create.html',{'form':form})
 
+@login_required
+def contact(request,contact_id):
+    contact = get_object_or_404(UserContacts, id=contact_id, owner=request.user)
+
+    return render(request,'basic_app/contact.html',{'contact':contact})
 
 @login_required
 def view_contacts(request):
-    print("Current User")
-    current_user = request.user.get_username()
-    user = User.objects.filter(username=current_user).first()
+    contacts = UserContacts.objects.filter(owner=request.user)
+    count = contacts.count()
+    my_dict = {'contacts':contacts,'number': count}
 
-    output = UserContacts.objects.filter(current_user_id=user.id)
-    count = output.count()
-    temp = UserContacts.objects.filter(current_user_id=user.id).first()
-    my_dict = {'output':output,'number': count}
-    
     return render(request,'basic_app/view_contacts.html',my_dict)
-    
-
-
 
 
 @login_required
-def update_contact(request):
+def update_contact(request,contact_id):
+    contact = get_object_or_404(UserContacts, id=contact_id, owner=request.user)
 
-    current_user = request.user.get_username()
-    user = User.objects.filter(username=current_user).first()
-    output = UserContacts.objects.filter(current_user_id=user.id)
-    count = output.count()
-    temp = UserContacts.objects.filter(current_user_id=user.id).first() 
-    
-    #contact_obj =get_object_or_404(UserContacts)
-
-    form = UserContactForm()
-
-    if request.method == "POST": 
-
-        form = UserContactForm(request.POST,instance=contact_obj)
+    if request.method == "POST":
+        form = UserContactForm(request.POST, instance=contact)
 
         if form.is_valid():
-            form.save(commit=True)
-            return index(request) 
+            contact = form.save(commit=False)
+            contact.owner = request.user
+            contact.save()
+            return HttpResponseRedirect(reverse('basic_app:view_contact', kwargs={'contact_id':contact_id}))
         else:
             print('Error Form Invalid')
-
-    my_dict = {'output':output,'form':form}
-
-    return render(request,'basic_app/update.html',my_dict)
+    else:
+        form = UserContactForm(instance=contact)
+    return render(request,'basic_app/update.html',{'form':form})
 
 
 @login_required
-def delete_contact(request):
+def delete_contact(request,contact_id):
+    contact = get_object_or_404(UserContacts, id=contact_id, owner=request.user)
+    contact.delete()
 
-    current_user = request.user.get_username()
-    user = User.objects.filter(username=current_user).first()
-    output = UserContacts.objects.filter(current_user_id=user.id)
-    count = output.count()
-    temp = UserContacts.objects.filter(current_user_id=user.id).first() 
-    
-    #contact_obj =get_object_or_404(UserContacts)
+    return HttpResponseRedirect(reverse('basic_app:view_contacts'))
 
-    form = UserContactForm()
-
-    if request.method == "POST": 
-
-        form = UserContactForm(request.POST,instance=contact_obj)
-
-        if form.is_valid():
-            form.save(commit=True)
-            return index(request) 
-        else:
-            print('Error Form Invalid')
-
-    my_dict = {'output':output,'form':form}
-
-    return render(request,'basic_app/delete.html',my_dict)
-
-
-    
-    
 

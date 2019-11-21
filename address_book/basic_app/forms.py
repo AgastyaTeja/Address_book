@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from basic_app.models import UserProfileInfo,UserContacts
+from basic_app.models import UserContacts
 
 
 class UserForm(forms.ModelForm):
@@ -15,4 +15,4 @@ class UserContactForm(forms.ModelForm):
 
     class Meta():
         model = UserContacts
-        fields = "__all__"
+        fields = ['first_name', 'last_name', 'phone_number','email_address','street_address']

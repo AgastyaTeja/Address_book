@@ -1,15 +1,18 @@
-{%extends 'basic_app/base.html' %}
-{% block body_block %}
+{%extends 'basic_app/base.html' %} {% block body_block %}
 
-<div class = "jumbotron">
-    <h2>Create a new contact</h2>
+<div class="jumbotron">
+    <h2>{{contact.first_name}} {{contact.last_name}}</h2>
     <br />
-    <form method="POST">
-        {{ username_x }}
-        {{form.as_p}}
-        {% csrf_token %}
-        <input type="submit" class="btn btn-primary" value="Submit">
-    </form>
+    <p><u>First Name</u>: {{contact.first_name}}</p>
+    <p><u>Last Name</u>: {{contact.last_name}}</p>
+    <p><u>Phone Number</u>: {{contact.phone_number}}</p>
+    <p><u>Email Address</u>: {{contact.email_address}}</p>
+    <p><u>Street Address</u>: {{contact.street_address}}</p>
+
+    <br />
+    <a class="btn btn-outline-primary" href="{% url 'basic_app:update_contact' contact_id=contact.id %}">Update a contact</a>
+    <a class="btn btn-outline-primary" href="{% url 'basic_app:delete_contact' contact_id=contact.id %}">Delete a contact</a>
+    <a class="btn btn-outline-primary" href="{% url 'basic_app:view_contacts' %}">All contacts</a>
 </div>
 
 {% endblock %}
