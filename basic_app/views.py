@@ -9,6 +9,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
+from django.db.models import Q
+
 # Create your views here.
 def index(request):
     return render(request,'basic_app/index.html')
@@ -131,3 +133,13 @@ def delete_contact(request,contact_id):
     return HttpResponseRedirect(reverse('basic_app:view_contacts'))
 
 
+def search_contacts(request):
+    my_dict = {}
+    search_name = request.GET.get('search_contact', '')
+
+    if search_name:
+        contacts = UserContacts.objects.filter(Q(owner=request.user) & (Q(first_name__icontains=search_name) | Q(last_name__icontains=search_name)))
+        count = contacts.count()
+        my_dict = {'contacts':contacts,'number': count,'search_name':search_name}
+
+    return render(request,'basic_app/search_contacts.html',my_dict)

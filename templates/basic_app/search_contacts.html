@@ -1,0 +1,55 @@
+{%extends 'basic_app/base.html' %} {% block body_block %}
+
+<div class="jumbotron">
+    <h2>Search contacts</h2>
+    <br />
+    <form method="GET">{% csrf_token %}
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Type Name</label>
+            </div>
+            <input type="text" class="form-control" name="search_contact">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Search contacts</button>
+            </div>
+        </div>
+    </form>
+    {% if search_name %}
+        <div class="alert alert-info" role="alert">
+            Your request: <b>{{ search_name }}</b>
+        </div>
+    {% endif %}
+    {% if contacts %}
+    <div class="alert alert-success" role="alert">
+        The number of contacts are: {{ number }}
+    </div>
+    <br />
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Email Address</th>
+            <th>Street Address</th>
+            <th>Link</th>
+        </thead>
+        {% for contact in contacts %}
+        <tr>
+            <td>{{ contact.first_name}}</td>
+            <td>{{ contact.last_name}}</td>
+            <td>{{ contact.phone_number}}</td>
+            <td>{{ contact.email_address}}</td>
+            <td>{{ contact.street_address}}</td>
+            <td><a href="{% url 'basic_app:view_contact' contact_id=contact.id %}">open</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        No contact records found!
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

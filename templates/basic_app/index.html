@@ -8,9 +8,10 @@
     {% if user.is_authenticated %}
         <h2>Main functionality</h2>
         <br />
-        <p class="lead">
+        <p>
             <a class="btn btn-outline-primary" href="{% url 'basic_app:new_contact' %}" role="button">Create a new contact</a>
             <a class="btn btn-outline-primary" href="{% url 'basic_app:view_contacts' %}" role="button">View all contacts</a>
+            <a class="btn btn-outline-primary" href="{% url 'basic_app:search_contacts' %}" role="button">Search contacts</a>
         </p>
     {% else %}
         <h2>About project</h2>

@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^(?P<contact_id>\d+)/$',views.contact),
     url(r'^all/$',views.view_contacts,name='view_contacts'),
     url(r'^$',views.view_contacts),
+    url(r'^search/$',views.search_contacts,name='search_contacts'),
     url(r'^contact/(?P<contact_id>\d+)/update/$',views.update_contact,name='update_contact'),
     url(r'^contact/(?P<contact_id>\d+)/delete/$',views.delete_contact,name="delete_contact")
 ]
